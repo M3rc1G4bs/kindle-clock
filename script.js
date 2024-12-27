@@ -1,28 +1,31 @@
+
 /* script.js */
 const hoursDigits = document.querySelectorAll('#hours .digit');
 const minutesDigits = document.querySelectorAll('#minutes .digit');
-const flipClock = document.querySelector('.flip-clock');
 
-function updateClock() {
-    const now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
+async function fetchTime() {
+    try {
+        const response = await fetch('https://worldtimeapi.org/api/timezone/America/Sao_Paulo');
+        const data = await response.json();
+        const now = new Date(data.datetime);
 
-    // Formata as horas e minutos para ter sempre dois dígitos
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
 
-    // Atualiza os dígitos das horas
-    hoursDigits[0].textContent = formattedHours[0];
-    hoursDigits[1].textContent = formattedHours[1];
+        // Atualiza os dígitos das horas
+        hoursDigits[0].textContent = hours[0];
+        hoursDigits[1].textContent = hours[1];
 
-    // Atualiza os dígitos dos minutos
-    minutesDigits[0].textContent = formattedMinutes[0];
-    minutesDigits[1].textContent = formattedMinutes[1];
+        // Atualiza os dígitos dos minutos
+        minutesDigits[0].textContent = minutes[0];
+        minutesDigits[1].textContent = minutes[1];
+    } catch (error) {
+        console.error('Erro ao buscar a hora:', error);
+    }
 }
 
-// Atualiza o relógio a cada segundo
-setInterval(updateClock, 1000);
+// Atualiza o relógio a cada minuto
+setInterval(fetchTime, 60000);
 
 // Inicializa o relógio na primeira carga
-updateClock();
+fetchTime();
