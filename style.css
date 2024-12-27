@@ -1,0 +1,72 @@
+/* style.css */
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    /* Fundo preto */
+    display: flex;
+    flex-direction: column;
+    /* Organiza os controles e o relógio verticalmente */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    /* Organiza os controles e o relógio dentro do container */
+    align-items: center;
+}
+
+.flip-clock {
+    display: flex;
+    flex-direction: column;
+    /* Garante que a orientação seja sempre vertical */
+}
+
+.flip-clock .segment {
+    margin: 10px 0;
+    /* Ajusta a margem para orientação vertical */
+}
+
+.segment {
+    position: relative;
+    margin: 0;
+    /* Remove a margem horizontal */
+}
+
+.digit-group {
+    display: flex;
+}
+
+.digit {
+    background-color: #111;
+    /* Fundo um pouco mais claro para os dígitos */
+    color: #fff;
+    /* Texto branco para os dígitos */
+    font-size: 5em;
+    font-weight: bold;
+    min-width: 80px;
+    /* Aumenta a largura para acomodar os dígitos sem separador */
+    height: 100px;
+    /* Aumenta a altura para corresponder à imagem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    /* Adiciona bordas arredondadas */
+    box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
+    /* Adiciona uma leve sombra para profundidade */
+}
+
+/* Estilos para Responsividade */
+@media (max-width: 600px) {
+    .digit {
+        font-size: 3em;
+        min-width: 50px;
+        height: 70px;
+    }
+}
