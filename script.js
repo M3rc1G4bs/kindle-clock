@@ -1,4 +1,3 @@
-
 /* script.js */
 const hoursDigits = document.querySelectorAll('#hours .digit');
 const minutesDigits = document.querySelectorAll('#minutes .digit');
@@ -7,10 +6,10 @@ async function fetchTime() {
     try {
         const response = await fetch('https://worldtimeapi.org/api/timezone/America/Sao_Paulo');
         const data = await response.json();
-        const now = new Date(data.datetime);
+        const datetime = new Date(data.datetime); // Usa o campo "datetime" do JSON
 
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const hours = String(datetime.getHours()).padStart(2, '0');
+        const minutes = String(datetime.getMinutes()).padStart(2, '0');
 
         // Atualiza os dígitos das horas
         hoursDigits[0].textContent = hours[0];
