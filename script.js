@@ -61,4 +61,4 @@ function keepScreenAwake() {
 updateClock();
 //preventScreenOff();
 //simulateInteraction();
-keepScreenAwake();
+//keepScreenAwake();
