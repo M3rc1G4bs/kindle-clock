@@ -29,5 +29,19 @@ function updateClock() {
 // Atualiza o relógio a cada segundo
 setInterval(updateClock, 1000);
 
-// Inicializa o relógio na primeira carga
+function preventScreenOff() {
+    const dummyElement = document.createElement('div');
+    dummyElement.style.position = 'absolute';
+    dummyElement.style.width = '1px';
+    dummyElement.style.height = '1px';
+    dummyElement.style.opacity = '0';
+    document.body.appendChild(dummyElement);
+
+    setInterval(() => {
+        dummyElement.textContent = new Date().getTime(); // Atualiza o conteúdo periodicamente
+    }, 30000); // Intervalo de 30 segundos
+}
+
+
 updateClock();
+preventScreenOff();
