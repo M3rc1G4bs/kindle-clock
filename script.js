@@ -29,7 +29,3 @@ function updateClock() {
 // Atualiza o relógio a cada segundo
 setInterval(updateClock, 1000);
 updateClock();
-
-//preventScreenOff();
-//simulateInteraction();
-//keepScreenAwake();
