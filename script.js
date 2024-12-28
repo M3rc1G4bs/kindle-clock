@@ -28,37 +28,8 @@ function updateClock() {
 
 // Atualiza o relógio a cada segundo
 setInterval(updateClock, 1000);
-
-function preventScreenOff() {
-    const dummyElement = document.createElement('div');
-    dummyElement.style.position = 'absolute';
-    dummyElement.style.width = '1px';
-    dummyElement.style.height = '1px';
-    dummyElement.style.opacity = '0';
-    document.body.appendChild(dummyElement);
-
-    setInterval(() => {
-        dummyElement.textContent = new Date().getTime(); // Atualiza o conteúdo periodicamente
-    }, 30000); // Intervalo de 30 segundos
-}
-
-function simulateInteraction() {
-    const clockContainer = document.querySelector('.container');
-    let isDimmed = false;
-
-    setInterval(() => {
-        clockContainer.style.opacity = isDimmed ? '1' : '0.99';
-        isDimmed = !isDimmed;
-    }, 10000); // Alterna opacidade a cada 10 segundos
-}
-
-function keepScreenAwake() {
-    setInterval(() => {
-        fetch('https://www.google.com/'); // Substitua por uma URL válida, se necessário
-    }, 10000); // Requisição a cada 10 segundos
-}
-
 updateClock();
+
 //preventScreenOff();
 //simulateInteraction();
 //keepScreenAwake();
