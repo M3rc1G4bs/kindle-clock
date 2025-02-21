@@ -1,17 +1,54 @@
-/* script.js */
 const hoursDigits = document.querySelectorAll('#hours .digit');
 const minutesDigits = document.querySelectorAll('#minutes .digit');
 const flipClock = document.querySelector('.flip-clock');
+let use24HourClock = true;
 
-function updateClock() {
-    const now = new Date();
-    let hours = now.getHours() - 3; // Subtrai 3 horas
-    let minutes = now.getMinutes();
+// Função para obter o fuso horário com base no IP do usuário
+async function getCurrentTimezoneByIp() {
+    const api = "https://worldtimeapi.org/api/ip";
+    let timezone;
+    try {
+        const response = await fetch(api);
 
-    // Ajusta as horas se forem negativas
-    if (hours < 0) {
-        hours += 24;
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        const jsonData = await response.json();
+        timezone = jsonData.timezone;
+    } catch (error) {
+        console.error("Error fetching time:", error);
     }
+    return timezone;
+}
+
+// Função para ajustar o fuso horário
+function changeTimezone(date, ianatz) {
+    var invdate = new Date(date.toLocaleString('en-US', {
+        timeZone: ianatz
+    }));
+
+    var diff = date.getTime() - invdate.getTime();
+    return new Date(date.getTime() - diff);
+}
+
+// Função para formatar a hora com dois dígitos
+function padClock(p, n) {
+    return p + ('0' + n).slice(-2);
+}
+
+// Função para atualizar o relógio
+async function updateClock() {
+    const timezone = await getCurrentTimezoneByIp();
+    const now = new Date();
+    const adjustedDate = changeTimezone(now, timezone);
+
+    let hours = adjustedDate.getHours();
+    if (!use24HourClock) {
+        hours = hours % 12 || 12; // Converte para formato 12h
+    }
+
+    const minutes = adjustedDate.getMinutes();
 
     // Formata as horas e minutos para ter sempre dois dígitos
     const formattedHours = String(hours).padStart(2, '0');
@@ -29,3 +66,13 @@ function updateClock() {
 // Atualiza o relógio a cada segundo
 setInterval(updateClock, 1000);
 updateClock();
+
+// Adiciona suporte para alternar entre 12h e 24h
+const toggle12h24h = document.getElementById("toggle12h");
+if (toggle12h24h) {
+    toggle12h24h.addEventListener("click", () => {
+        use24HourClock = !use24HourClock;
+        toggle12h24h.innerHTML = use24HourClock ? "Toggle 24h" : "Toggle 12h";
+        updateClock();
+    });
+}
