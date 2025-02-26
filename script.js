@@ -2,11 +2,15 @@ const hoursDigits = document.querySelectorAll('#hours .digit');
 const minutesDigits = document.querySelectorAll('#minutes .digit');
 const flipClock = document.querySelector('.flip-clock');
 let use24HourClock = true;
+let userTimezone = null; // Variável global para armazenar o fuso horário
 
 // Função para obter o fuso horário com base no IP do usuário
 async function getCurrentTimezoneByIp() {
+    if (userTimezone) {
+        return userTimezone; // Retorna o fuso horário já armazenado
+    }
+
     const api = "https://worldtimeapi.org/api/ip";
-    let timezone;
     try {
         const response = await fetch(api);
 
@@ -15,11 +19,11 @@ async function getCurrentTimezoneByIp() {
         }
 
         const jsonData = await response.json();
-        timezone = jsonData.timezone;
+        userTimezone = jsonData.timezone; // Armazena o fuso horário
     } catch (error) {
         console.error("Error fetching time:", error);
     }
-    return timezone;
+    return userTimezone;
 }
 
 // Função para ajustar o fuso horário
@@ -39,9 +43,12 @@ function padClock(p, n) {
 
 // Função para atualizar o relógio
 async function updateClock() {
-    const timezone = await getCurrentTimezoneByIp();
+    if (!userTimezone) {
+        await getCurrentTimezoneByIp(); // Consulta a API apenas na primeira vez
+    }
+
     const now = new Date();
-    const adjustedDate = changeTimezone(now, timezone);
+    const adjustedDate = changeTimezone(now, userTimezone);
 
     let hours = adjustedDate.getHours();
     if (!use24HourClock) {
